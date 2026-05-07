@@ -9,7 +9,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Ro$h!n!,H$_#lov3&^cod!ng07', // replace this
+    password: 'Prar_#lov3&^cod!ng06', // replace this
     database: 'construction_db'
 });
 
@@ -58,6 +58,25 @@ app.get('/delayed-tasks', (req, res) => {
         WHERE Actual_End_Date > Planned_End_Date
     `, (err, result) => {
         if (err) return res.send(err);
+        res.send(result);
+    });
+});
+app.post('/add-complaint', (req, res) => {
+    const { name, contact, projectName, complaintType, description } = req.body;
+
+    const sql = `
+        INSERT INTO Complaint (Name, Contact, Project_Name, Complaint_Type, Description)
+        VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(sql, [name, contact, projectName, complaintType, description], (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.send({ message: 'Complaint registered successfully', complaintId: result.insertId });
+    });
+});
+app.get('/complaints', (req, res) => {
+    db.query('SELECT * FROM Complaint ORDER BY Created_At DESC', (err, result) => {
+        if (err) return res.status(500).send(err);
         res.send(result);
     });
 });

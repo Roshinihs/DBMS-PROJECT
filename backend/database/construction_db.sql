@@ -112,7 +112,7 @@ VALUES
 INSERT INTO Progress (Task_ID, Update_Date, Percentage_Completed)
 VALUES 
 (1, '2026-01-05', 50),
-(1, '2026-01-10', 100);workers
+(1, '2026-01-10', 100);
 
 -- Delay (Foundation delayed)
 INSERT INTO Delay (Task_ID, Delay_Date, Delay_Days, Delay_Reason)
@@ -123,3 +123,15 @@ SELECT * FROM Task;
 ALTER TABLE Workers
 CHANGE salary contact VARCHAR(15);
 DESCRIBE Workers;
+
+-- Complaint Registration Table
+CREATE TABLE IF NOT EXISTS Complaint (
+    Complaint_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Contact VARCHAR(15),
+    Project_Name VARCHAR(100),
+    Complaint_Type VARCHAR(100),
+    Description TEXT NOT NULL,
+    Status VARCHAR(50) DEFAULT 'Pending',
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
