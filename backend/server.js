@@ -33,6 +33,52 @@ app.get('/projects', (req, res) => {
         }
     });
 });
+app.post('/add-project', (req, res) => {
+
+  const {
+    builderId,
+    name,
+    location,
+    budget,
+    startDate,
+    endDate
+  } = req.body;
+
+  const projectData = [
+  1,
+  name,
+  location,
+  budget,
+  startDate,
+  endDate
+];
+
+  const sql = `
+    INSERT INTO project
+    (Builder_ID, Name, Location, Budget, Start_Date, End_Date)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  console.log(projectData);
+
+  db.query(
+    sql,
+    projectData,
+    (err, result) => {
+        console.log(err);
+
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      res.send({
+        message: 'Project registered successfully',
+        projectId: result.insertId
+      });
+
+    }
+  );
+
+});
 app.get('/approvals', (req, res) => {
     db.query('SELECT * FROM Approval', (err, result) => {
         if (err) return res.send(err);
@@ -79,6 +125,80 @@ app.get('/complaints', (req, res) => {
         if (err) return res.status(500).send(err);
         res.send(result);
     });
+});
+app.post('/add-agent', (req, res) => {
+
+  const { name, contact, email, area } = req.body;
+
+  const sql = `
+    INSERT INTO agent
+    (Name, Phone, Email, City)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.query(
+    sql,
+    [name, contact, email, area],
+    (err, result) => {
+
+      console.log(err);
+
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      res.send({
+        success: true,
+        message: 'Agent registered successfully'
+      });
+
+    }
+  );
+
+});
+app.get('/agents', (req, res) => {
+    db.query('SELECT * FROM Agent ORDER BY Created_At DESC', (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.send(result);
+    });
+});
+app.post('/admin-login', (req, res) => {
+
+  const { username, password } = req.body;
+
+  const sql = `
+    SELECT * FROM admin
+    WHERE Username = ? AND Password = ?
+  `;
+
+  db.query(
+    sql,
+    [username, password],
+    (err, result) => {
+
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      if (result.length > 0) {
+
+        res.send({
+          success: true,
+          message: 'Login successful'
+        });
+
+      } else {
+
+        res.send({
+          success: false,
+          message: 'Invalid username or password'
+        });
+
+      }
+
+    }
+  );
+
 });
 app.listen(5000, () => {
     console.log('Server running on port 5000');
