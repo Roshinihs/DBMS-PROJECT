@@ -13,6 +13,7 @@ CREATE TABLE Builder (
 -- 2. Project Table
 CREATE TABLE Project (
     Project_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Project_Code VARCHAR(20),
     Builder_ID INT,
     Name VARCHAR(100),
     Location VARCHAR(100),

@@ -3,6 +3,7 @@ USE construction_db;
 -- 1. Builder Table
 CREATE TABLE Builder (
     Builder_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Builder_Code VARCHAR(20) UNIQUE,
     Name VARCHAR(100),
     Contact VARCHAR(15),
     Email VARCHAR(100)
@@ -11,6 +12,7 @@ CREATE TABLE Builder (
 -- 2. Project Table
 CREATE TABLE Project (
     Project_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Project_Code VARCHAR(20),
     Builder_ID INT,
     Name VARCHAR(100),
     Location VARCHAR(100),
@@ -144,4 +146,13 @@ CREATE TABLE IF NOT EXISTS Agent (
     Email VARCHAR(100),
     City VARCHAR(100),
     Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Public User Registration Table
+CREATE TABLE IF NOT EXISTS public_users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(20),
+    password VARCHAR(100)
 );
